@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entre Versos - Página de Poesías</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f7f3f0;
+            color: #2d2d2d;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #8b5a2b;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        header h1 {
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        nav {
+            background-color: #a67c52;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #f7f3f0;
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .poema-card {
+            background-color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .poema-card h2 {
+            color: #8b5a2b;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .poema-card .autor {
+            text-align: right;
+            color: #a67c52;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .poema-card .versos {
+            white-space: pre-line;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .nuevo-poema {
+            background-color: #a67c52;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Estilos del formulario */
+        .formulario-poema {
+            background-color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .formulario-poema h2 {
+            color: #8b5a2b;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #8b5a2b;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #a67c52;
+            border-radius: 4px;
+            background-color: #f7f3f0;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #8b5a2b;
+            box-shadow: 0 0 3px rgba(139, 90, 43, 0.3);
+        }
+
+        .terminos {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-enviar {
+            background-color: #8b5a2b;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .btn-enviar:hover {
+            background-color: #6b4423;
+        }
+
+        .mensaje-exito {
+            display: none;
+            background-color: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* Estilos del QR */
+        .seccion-qr {
+            background-color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .seccion-qr h2 {
+            color: #8b5a2b;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .seccion-qr .subtitulo {
+            color: #a67c52;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .qr-contenedor {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .qr-imagen {
+            width: 200px;
+            height: 200px;
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 0.5rem;
+        }
+
+        .btn-descargar {
+            background-color: #a67c52;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-descargar:hover {
+            background-color: #8b5a2b;
+        }
+
+        .seccion-qr .texto-promocional {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: #f7f3f0;
+            border-radius: 4px;
+            line-height: 1.8;
+        }
+
+        footer {
+            background-color: #8b5a2b;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            nav ul {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .poema-card,
+            .formulario-poema,
+            .seccion-qr {
+                padding: 1.5rem;
+            }
+
+            .qr-imagen {
+                width: 180px;
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Entre Versos</h1>
+        <p>Donde las palabras encuentran su hogar</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#amor">Poesías de Amor</a></li>
+            <li><a href="#naturaleza">Poesías de Naturaleza</a></li>
+            <li><a href="#autores">Autores Destacados</a></li>
+            <li><a href="#enviar">Crea Tu Poema</a></li>
+            <li><a href="#qr">Acceso Rápido</a></li>
+        </ul>
+    </nav>
+
+    <div class="container" id="inicio">
+        <section class="nuevo-poema">
+            <h2>¿Tienes un poema para compartir?</h2>
+            <p>Únete a nuestra comunidad y haz que tus versos lleguen al mundo</p>
+            <button onclick="document.getElementById('enviar').scrollIntoView()">Crear Mi Poema</button>
+        </section>
+
+        <section class="poema-card" id="amor">
+            <h2>El Silencio del Corazón</h2>
+            <p class="autor">Por Ana López</p>
+            <p class="versos">
+El silencio del corazón habla más que las palabras,
+cuando los ojos se encuentran y entienden sin rumbo,
+cuando un suspiro guarda todo un universo de sueños,
+y el tacto de tus manos es el refugio que busco.
+
+No necesito más que el eco de tu respiración,
+que el calor de tu cuerpo junto al mío se queme,
+porque en este silencio hay una canción eterna,
+que solo nuestros almas pueden entender.
+            </p>
+        </section>
+
+        <section class="poema-card" id="naturaleza">
+            <h2>Atardecer en el Valle</h2>
+            <p class="autor">Por Carlos Ruiz</p>
+            <p class="versos">
+El sol se tiñe de oro y de rojo,
+bañando los cerros en su último brillo,
+el viento susurra entre los árboles,
+y el valle se prepara para el reposo.
+
+Las flores cierran sus pétalos suaves,
+los pájaros regresan a sus nidos,
+el río sigue su camino sereno,
+guardando los secretos del día que muere.
+
+Mientras la luna comienza a asomar,
+el valle duerme bajo el manto estrellado,
+guardando la promesa de un nuevo amanecer,
+donde la vida volverá a despertar.
+            </p>
+        </section>
+
+        <section class="poema-card" id="autores">
+            <h2>Soneto XVII</h2>
+            <p class="autor">Por Pablo Neruda</p>
+            <p class="versos">
+No te amo como si fueras rosa de sal, topacio
+o flecha de claveles que propagan el fuego:
+te amo como se aman ciertas cosas oscuras,
+secretamente, entre la sombra y el alma.
+
+Te amo como la planta que no florece pero
+lleva dentro sí la luz de aquellas flores,
+y gracias a tu amor vive oscuroamente
+el tronco de mi alma.
+
+Te amo sin saber cómo, ni cuándo, ni de dónde,
+te amo directamente sin problemas ni orgullo:
+así te amo porque no sé amar de otra manera,
+sino así de este modo en que no soy ni eres,
+tan cerca que tu mano sobre mi pecho es mía,
+tan cerca que se cierran tus ojos con mi sueño.
+            </p>
+            <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #8b5a2b;">*Poema con fines ilustrativos - derechos reservados a sus autores*</p>
+        </section>
+
+        <!-- Sección del formulario -->
+        <section class="formulario-poema" id="enviar">
+            <div class="mensaje-exito" id="mensajeExito">
+                ¡Tu poema ha sido enviado exitosamente! Pronto podrás verlo en nuestra página.
+            </div>
+
+            <h2>Crea y Comparte Tu Poema</h2>
+            <form id="formularioPoema" onsubmit="enviarPoema(event)">
+                <div class="form-group">
+                    <label for="titulo">Título de tu poema</label>
+                    <input type="text" id="titulo" name="titulo" required placeholder="Ej: Mi Canto a la Ciudad">
+                </div>
+
+                <div class="form-group">
+                    <label for="autor">Tu nombre o seudónimo</label>
+                    <input type="text" id="autor" name="autor" required placeholder="Ej: Juan Pérez o El Poeta del Valle">
+                </div>
+
+                <div class="form-group">
+                    <label for="categoria">Categoría</label>
+                    <select id="categoria" name="categoria" required>
+                        <option value="">Selecciona una categoría</option>
+                        <option value="amor">Amor</option>
+                        <option value="naturaleza">Naturaleza</option>
+                        <option value="ciudad">Ciudad</option>
+                        <option value="vida">Vida y Existencia</option>
+                        <option value="otros">Otros</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="versos">Tu poema</label>
+                    <textarea id="versos" name="versos" required placeholder="Escribe aquí tus versos, separando las estrofas con saltos de línea..."></textarea>
+                </div>
+
+                <div class="form-group terminos">
+                    <input type="checkbox" id="terminos" name="terminos" required>
+                    <label for="terminos">Acepto que mi poema sea publicado en la página y que se respeten los derechos de autor</label>
+                </div>
+
+                <button type="submit" class="btn-enviar">Enviar Mi Poema</button>
+            </form>
+        </section>
+
+        <!-- Sección del QR -->
+        <section class="seccion-qr" id="qr">
+            <h2>Acceso Rápido con QR</h2>
+            <p class="subtitulo">¡Llega a Entre Versos en un solo escaneo!</p>
+
+            <div class="qr-contenedor">
+                <a href="https://entreversos-poemas.com" target="_blank">
+                    <img src="https://via.placeholder.com/200x200?text=QR+ENTRE+VERSOS" alt="Código QR para acceder a Entre Versos" class="qr-imagen" id="imagenQR">
+                </a>
+                <button class="btn-descargar" onclick="descargarQR()">Descargar QR</button>
+            </div>
+
+            <div class="texto-promocional">
+                <p>✨ <b>Comparte el QR con tus amigos amantes de la poesía</b> y ayúdanos a crecer nuestra comunidad de versos.</p>
+                <p>📱 <b>Guárdalo en tu celular</b> para tener acceso instantáneo a nuevos poemas todos los días.</p>
+                <p>🖨️ <b>Imprímelo</b> y colócalo en tu espacio favorito para inspirarte cuando lo necesites.</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2026 Entre Versos - Todos los derechos reservados</p>
+        <p>Ciudad de México, Gustavo A. Madero</p>
+    </footer>
+
+    <script>
+        function enviarPoema(event) {
+            // Evita que el formulario se envíe de forma tradicional
+            event.preventDefault();
+            
+            // Muestra el mensaje de éxito
+            document.getElementById('mensajeExito').style.display = 'block';
+            
+            // Reinicia el formulario
+            document.getElementById('formularioPoema').reset();
+            
+            // Oculta el mensaje después de 5 segundos
+            setTimeout(() => {
+                document.getElementById('mensajeExito').style.display = 'none';
+            }, 5000);
+        }
+
+        function descargarQR() {
+            // Crea un enlace temporal para la descarga
+            const enlace = document.createElement('a');
+            enlace.href = document.getElementById('imagenQR').src;
+            enlace.download = 'QR-Entre-Versos.png';
+            document
